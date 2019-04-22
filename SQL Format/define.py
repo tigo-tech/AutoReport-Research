@@ -12,23 +12,37 @@ join_str = "JOIN"
 on_str = "ON"
 all_str = "*"
 equal_str = "="
-count_str = "COUNT"
 distin_str = "DISTINCT"
-sum_str = "SUM"
-avg_str = "AVG"
 where_str = "WHERE"
-count_num = "count_num"
-avg_num = "avg_num"
-sum_num = "sum_num"
+
+aggregation_str={
+    "count_str": "COUNT",
+    "avg_str": "AVG",
+    "sum_str": "SUM",
+    "max_str": "MAX",
+    "min_str": "MIN",
+}
+
+aggregation_name = {
+    "count_num": "cout_num",
+    "avg_num": "avg_num",
+    "sum_num": "sum_num",
+    "max_num": "max_num",
+    "min_num": "min_num",
+}
 
 mode_dict = {
-    1: count_str,
-    2: avg_str,
-    3: sum_str
+    1: aggregation_str["count_str"],
+    2: aggregation_str["avg_str"],
+    3: aggregation_str["sum_str"],
+    4: aggregation_str["max_str"],
+    5: aggregation_str["min_str"],
 }
 
 mode_name = {
-    1:count_num,
-    2:avg_num,
-    3:sum_str
+    1: aggregation_name["count_num"],
+    2: aggregation_name["avg_num"],
+    3: aggregation_name["sum_num"],
+    4: aggregation_name["max_num"],
+    5: aggregation_name["min_num"],
 }

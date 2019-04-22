@@ -39,6 +39,10 @@ class single_module:
         cols_output.append(mode_dict[mode])
         return cols_output, format_str
 
+    def naive_where(self,conditions):
+        # simple where 
+        pass
+
 if __name__ == "__main__":
     #run test for single module
     a = single_module(["regionId","gender","user"])
