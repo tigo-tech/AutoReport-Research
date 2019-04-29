@@ -15,7 +15,7 @@ equal_str = "="
 distin_str = "DISTINCT"
 where_str = "WHERE"
 
-aggregation_str={
+aggregation_str = {
     "count_str": "COUNT",
     "avg_str": "AVG",
     "sum_str": "SUM",
@@ -31,18 +31,33 @@ aggregation_name = {
     "min_num": "min_num",
 }
 
-mode_dict = {
-    1: aggregation_str["count_str"],
-    2: aggregation_str["avg_str"],
-    3: aggregation_str["sum_str"],
-    4: aggregation_str["max_str"],
-    5: aggregation_str["min_str"],
-}
+# mode_dict = {
+#     1: aggregation_str["count_str"],
+#     2: aggregation_str["avg_str"],
+#     3: aggregation_str["sum_str"],
+#     4: aggregation_str["max_str"],
+#     5: aggregation_str["min_str"],
+# }
 
+# mode_name = {
+#     1: aggregation_name["count_num"],
+#     2: aggregation_name["avg_num"],
+#     3: aggregation_name["sum_num"],
+#     4: aggregation_name["max_num"],
+#     5: aggregation_name["min_num"],
+# }
+
+mode_dict = {
+    'count': aggregation_str["count_str"],
+    'avg': aggregation_str["avg_str"],
+    'sum': aggregation_str["sum_str"],
+    'max': aggregation_str["max_str"],
+    'min': aggregation_str["min_str"],
+}
 mode_name = {
-    1: aggregation_name["count_num"],
-    2: aggregation_name["avg_num"],
-    3: aggregation_name["sum_num"],
-    4: aggregation_name["max_num"],
-    5: aggregation_name["min_num"],
+    'count': aggregation_name["count_num"],
+    'avg': aggregation_name["avg_num"],
+    'sum': aggregation_name["sum_num"],
+    'max': aggregation_name["max_num"],
+    'min': aggregation_name["min_num"],
 }
