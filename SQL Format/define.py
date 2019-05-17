@@ -14,6 +14,12 @@ all_str = "*"
 equal_str = "="
 distin_str = "DISTINCT"
 where_str = "WHERE"
+desc_str = "DESC"
+asc_str = "ASC"
+like_str = "LIKE"
+like_border = "%"
+not_str = "NOT"
+quation_str = "\'"
 
 aggregation_str = {
     "count_str": "COUNT",
