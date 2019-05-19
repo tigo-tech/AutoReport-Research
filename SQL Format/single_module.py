@@ -26,7 +26,9 @@ class single_module:
         self.__function = dict['function']
         self.__group = dict['group']
         self.__where = dict['where']
+        self.__like = dict['like']
         self.__connect = dict['connect']
+        self.__orderby = dict['order_by']
 
     def splice_sql(self):
         """
@@ -50,6 +52,10 @@ class single_module:
         if len(self.__where) != 0:
             # 有where
             sql = self.naive_where(sql)
+        if len(self.__orderby) != 0:
+            sql = self.naive_order(sql)
+        if len(self.__like) != 0:
+            sql = self.naive_like(sql)
         return sql
 
     def naive_aggregation(self):
@@ -127,31 +133,41 @@ class single_module:
                blank_str + where_item['symbol'] + blank_str + where_item['right']
         return str
 
+    def naive_like(self,str):
+        '''
+        :param str:拼接的字符串
+        :return: 返回完成拼接的like
+        '''
+        str += blank_str
+        for item in self.__like:
+            if item['item_type'] == not_str:
+                str += item['item'] + blank_str + not_str + blank_str + like_str
+            else:
+                str += item['item'] + blank_str + like_str
+            if item['like_type'] == "front":
+                str += blank_str + quation_str + item['like_condition'] + like_border + quation_str
+            if item['like_type'] == "back":
+                str += blank_str + quation_str + like_border + item['like_condition'] + quation_str
+            if item['like_type'] == "contain":
+                str += blank_str + quation_str + like_border + item['like_condition'] +\
+                       like_border + quation_str
+            str += comma_str
+        str = str[:-1]
+        return str
 
-if __name__ == "__main__":
-    # run test for single module
-    a = single_module({'column': ['A', 'B', 'C', 'D'],
-                       'function': {'count': [0, 1], 'sum': [2, 3]},
-                       # 'function': {},
-                       'table': 'user',
-                       'group': [0, 1, 2],
-                       'where': [{'symbol': '=',
-                                  'left': 'user.id',
-                                  'right': 'sell.id',
-                                  },
-                                 {'symbol': '=',
-                                  'left': 'user.id',
-                                  'right': '舔狗们',
-                                  },
-                                 {'symbol': '=',
-                                  'left': 'user.id',
-                                  'right': '张世俊',
-                                  },
-                                 {'symbol': '=',
-                                  'left': 'user.id',
-                                  'right': '张建顺',
-                                  }
-                                 ],
-                       'connect': ['and', 'or', 'and']
-                       })
-    print(a.splice_sql())
+    def naive_order(self, str):
+        '''
+        :param str: 拼接的字符串
+        :return: 返回完成拼接的order_by
+        '''
+        str += blank_str + order_str
+        for item in self.__orderby:
+            if item['order_type'] is not "":
+                str += blank_str + item['item'] + blank_str + item['order_type'] + comma_str
+            else:
+                str += blank_str + item['item'] + comma_str
+        str = str[:-1]
+        return str
+
+
+
