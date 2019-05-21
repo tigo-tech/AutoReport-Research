@@ -21,14 +21,14 @@ class single_module:
         """
         :param dict:数据字典,格式如test example
         """
-        self.__cols = dict['column']
-        self.__table = dict['table']
-        self.__function = dict['function']
-        self.__group = dict['group']
-        self.__where = dict['where']
-        self.__like = dict['like']
-        self.__connect = dict['connect']
-        self.__orderby = dict['order_by']
+        self.__cols = dict.get('column',None)
+        self.__table = dict.get('table',None)
+        self.__function = dict.get('function',None)
+        self.__group = dict.get('group',None)
+        self.__where = dict.get('where',None)
+        self.__like = dict.get('like',None)
+        self.__connect = dict.get('connect',None)
+        self.__orderby = dict.get('order_by',None)
 
     def splice_sql(self):
         """
@@ -36,7 +36,7 @@ class single_module:
             该函数的作用是整合模块
         :return: 最终的sql
         """
-        if len(list(self.__function.keys())) != 0:
+        if self.__function is not None:
             # 有聚合函数
             sql = self.naive_aggregation()
         else:
@@ -46,16 +46,14 @@ class single_module:
                 sql += col + comma_str
             sql = sql[:-1] + blank_str
             sql += from_str + blank_str + self.__table
-        if len(self.__group) != 0:
+        if self.__group is not None:
             # 有group by
             sql = self.naive_group(sql)
-        if len(self.__where) != 0:
+        if self.__where is not None:
             # 有where
             sql = self.naive_where(sql)
-        if len(self.__orderby) != 0:
+        if self.__orderby is not None:
             sql = self.naive_order(sql)
-        if len(self.__like) != 0:
-            sql = self.naive_like(sql)
         return sql
 
     def naive_aggregation(self):
@@ -117,9 +115,11 @@ class single_module:
         group_str += blank_str + where_str + blank_str + self.__where[0]['left'] + \
                      blank_str + self.__where[0]['symbol'] + blank_str + \
                      self.__where[0]['right']
-        if len(self.__connect) != 0:
+        if self.__connect is not None:
             for index, connect in enumerate(self.__connect):
                 group_str = self.splice_where(group_str, self.__where[index + 1], connect)
+        if self.__like is not None:
+            group_str = self.naive_like(group_str)
         return group_str
 
     def splice_where(self, str, where_item, connect):
@@ -140,10 +140,11 @@ class single_module:
         '''
         str += blank_str
         for item in self.__like:
+            col = self.__cols[item['item']]
             if item['item_type'] == not_str:
-                str += item['item'] + blank_str + not_str + blank_str + like_str
+                str += col + blank_str + not_str + blank_str + like_str
             else:
-                str += item['item'] + blank_str + like_str
+                str += col + blank_str + like_str
             if item['like_type'] == "front":
                 str += blank_str + quation_str + item['like_condition'] + like_border + quation_str
             if item['like_type'] == "back":
@@ -162,10 +163,9 @@ class single_module:
         '''
         str += blank_str + order_str
         for item in self.__orderby:
-            if item['order_type'] is not "":
-                str += blank_str + item['item'] + blank_str + item['order_type'] + comma_str
-            else:
-                str += blank_str + item['item'] + comma_str
+            col = self.__cols[item['item']]
+            if item['order_type'] == desc_str:
+                str += blank_str + col + blank_str + item['order_type'] + comma_str
         str = str[:-1]
         return str
 
