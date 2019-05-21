@@ -13,7 +13,7 @@ class ControlSqlite:
         '''
         self.__cursor = self.__conn.cursor()
         self.__cursor.execute(sql_str)
-        result = self.cursor.fetchall()
+        result = self.__cursor.fetchall()
         # print(result)
         self.__cursor.close()
         return result
