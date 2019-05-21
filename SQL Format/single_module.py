@@ -140,10 +140,11 @@ class single_module:
         '''
         str += blank_str
         for item in self.__like:
+            col = self.__cols[item['item']]
             if item['item_type'] == not_str:
-                str += item['item'] + blank_str + not_str + blank_str + like_str
+                str += col + blank_str + not_str + blank_str + like_str
             else:
-                str += item['item'] + blank_str + like_str
+                str += col + blank_str + like_str
             if item['like_type'] == "front":
                 str += blank_str + quation_str + item['like_condition'] + like_border + quation_str
             if item['like_type'] == "back":
@@ -162,10 +163,9 @@ class single_module:
         '''
         str += blank_str + order_str
         for item in self.__orderby:
-            if item['order_type'] is not "":
-                str += blank_str + item['item'] + blank_str + item['order_type'] + comma_str
-            else:
-                str += blank_str + item['item'] + comma_str
+            col = self.__cols[item['item']]
+            if item['order_type'] == desc_str:
+                str += blank_str + col + blank_str + item['order_type'] + comma_str
         str = str[:-1]
         return str
 

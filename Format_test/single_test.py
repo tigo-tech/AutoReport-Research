@@ -25,23 +25,23 @@ if __name__ == "__main__":
                                   }
                                  ],
                        'connect': ['and', 'or', 'and'],
-                       'order_by': [{'item':'age',
+                       'order_by': [{'item': 2,
                                      'order_type':""
                                      },
-                                    {'item': 'grade',
-                                     'order_type':asc_str
+                                    {'item': 3,
+                                     'order_type':desc_str
                                     }],
-                       'like': [{'item':'name',
+                       'like': [{'item': 0,
                                  'item_type':not_str,
                                  'like_type':'front',
                                  'like_condition':'张'
                                  },
-                                {'item': 'name',
+                                {'item': 1,
                                  'item_type':"",
                                  'like_type':'back',
                                  'like_condition':'张'
                                  },
-                                {'item': 'name',
+                                {'item': 0,
                                  'item_type':"",
                                  'like_type':'contain',
                                  'like_condition':'张'
