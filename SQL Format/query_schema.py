@@ -25,8 +25,9 @@ def list_table(cursor):
 
 # 查询单表外键关系
 def list_fk(cursor, table_name):
-    cursor.execute("SELECT * FROM information_schema.INNODB_FOREIGN WHERE FOR_NAME LIKE %s OR REF_NAME LIKE %s"
-                   % ("'%" + table_name + "'", "'%" + table_name + "'"))
+
+    cursor.execute("SELECT * FROM information_schema.INNODB_FOREIGN WHERE FOR_NAME = %s OR REF_NAME = %s"
+                   % ("'" + database + "/" + table_name + "'", "'" + database + "/" + table_name + "'"))
     table_relation_list = cursor.fetchall()
     relation_dict = {}
     table_relations = {}
