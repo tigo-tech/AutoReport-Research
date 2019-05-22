@@ -7,28 +7,25 @@ class single_module:
     """
     modifiedby:彭于晏 2019/4/29
 
-    该module做单表查询,完成的工作
-    1.无聚合函数的普通列
-    2.包含一些聚合函数,比如count,avg,sum,abs关键字,普通列和聚合函数的混合
+    该module做单表和多表(非join嵌套)查询,完成的工作
+    1.无内置函数的普通列
+    2.包含一些内置函数,比如count,avg,sum,abs关键字,普通列和聚合函数的混合
     3.group by关键字
     4.where关键字
-
-    to do:1.聚合函数只是内置函数的一部分，内置函数的返回可能就不是一个结果
-          2.加上之前sql_format的东西,整合成single和mutiply
+    5.order by关键字
     """
 
     def __init__(self, dict):
         """
         :param dict:数据字典,格式如test example
         """
-        self.__cols = dict.get('column',None)
-        self.__table = dict.get('table',None)
-        self.__function = dict.get('function',None)
-        self.__group = dict.get('group',None)
-        self.__where = dict.get('where',None)
-        self.__like = dict.get('like',None)
-        self.__connect = dict.get('connect',None)
-        self.__orderby = dict.get('order_by',None)
+        self.__cols = dict.get('column', None)
+        self.__table = dict.get('table', None)
+        self.__function = dict.get('function', None)
+        self.__group = dict.get('group', None)
+        self.__where = dict.get('where', None)
+        self.__connect = dict.get('connect', None)
+        self.__orderby = dict.get('order_by', None)
 
     def splice_sql(self):
         """
@@ -46,12 +43,12 @@ class single_module:
                 sql += col + comma_str
             sql = sql[:-1] + blank_str
             sql += from_str + blank_str + self.__table
-        if self.__group is not None:
-            # 有group by
-            sql = self.naive_group(sql)
         if self.__where is not None:
             # 有where
             sql = self.naive_where(sql)
+        if self.__group is not None:
+            # 有group by
+            sql = self.naive_group(sql)
         if self.__orderby is not None:
             sql = self.naive_order(sql)
         return sql
@@ -106,21 +103,19 @@ class single_module:
         # 去掉最后多余的,
         return format_str[:-1]
 
-    def naive_where(self, group_str):
+    def naive_where(self, sql_str):
         """
         该函数用来拼接where条件
-        :param group_str: 完成group by之后的语句
+        :param group_str: 完成from table 之后的语句
         :return: 完成where之后的sql
         """
-        group_str += blank_str + where_str + blank_str + self.__where[0]['left'] + \
-                     blank_str + self.__where[0]['symbol'] + blank_str + \
-                     self.__where[0]['right']
+        sql_str += blank_str + where_str + blank_str + self.__where[0]['left'] + \
+                   blank_str + self.__where[0]['symbol'] + blank_str + \
+                   self.__where[0]['right']
         if self.__connect is not None:
             for index, connect in enumerate(self.__connect):
-                group_str = self.splice_where(group_str, self.__where[index + 1], connect)
-        if self.__like is not None:
-            group_str = self.naive_like(group_str)
-        return group_str
+                sql_str = self.splice_where(sql_str, self.__where[index + 1], connect)
+        return sql_str
 
     def splice_where(self, str, where_item, connect):
         """
@@ -131,29 +126,6 @@ class single_module:
         """
         str += blank_str + connect + blank_str + where_item['left'] + \
                blank_str + where_item['symbol'] + blank_str + where_item['right']
-        return str
-
-    def naive_like(self,str):
-        '''
-        :param str:拼接的字符串
-        :return: 返回完成拼接的like
-        '''
-        str += blank_str
-        for item in self.__like:
-            col = self.__cols[item['item']]
-            if item['item_type'] == not_str:
-                str += col + blank_str + not_str + blank_str + like_str
-            else:
-                str += col + blank_str + like_str
-            if item['like_type'] == "front":
-                str += blank_str + quation_str + item['like_condition'] + like_border + quation_str
-            if item['like_type'] == "back":
-                str += blank_str + quation_str + like_border + item['like_condition'] + quation_str
-            if item['like_type'] == "contain":
-                str += blank_str + quation_str + like_border + item['like_condition'] +\
-                       like_border + quation_str
-            str += comma_str
-        str = str[:-1]
         return str
 
     def naive_order(self, str):
@@ -168,6 +140,3 @@ class single_module:
                 str += blank_str + col + blank_str + item['order_type'] + comma_str
         str = str[:-1]
         return str
-
-
-
