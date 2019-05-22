@@ -1,12 +1,13 @@
 import sqlite3
 
+
 class ControlSqlite:
-    def __init__(self,database):
+    def __init__(self, database):
         self.__database = database
         self.__conn = sqlite3.connect(self.__database)
-        self.__cursor  = None
+        self.__cursor = None
 
-    def execute(self,sql_str):
+    def execute(self, sql_str):
         '''
         :param sql_str: 传入生成的sql语句
         :return: 返回查询结果元组
@@ -18,13 +19,13 @@ class ControlSqlite:
         self.__cursor.close()
         return result
 
-    def get_columns(self,tablename):
+    def get_columns(self, tablename):
         '''
         :param tablename: 表名
         :return: 返回列名列表
         '''
         self.__cursor = self.__conn.cursor()
-        str = "PRAGMA table_info("+ tablename +");"
+        str = "PRAGMA table_info(" + tablename + ");"
         self.__cursor.execute(str)
         result = self.__cursor.fetchall()
         # print(result)
@@ -44,7 +45,6 @@ class ControlSqlite:
         # print(result)
         self.__cursor.close()
         return result
-
 
 
 if __name__ == '__main__':

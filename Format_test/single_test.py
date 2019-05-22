@@ -1,6 +1,5 @@
 from single_module import *
 from sqlite_control import ControlSqlite
-from query_schema import ControlMysql
 def test_case():
     control = ControlSqlite("../database/classtable.db")
     table = control.get_tables()
@@ -8,7 +7,7 @@ def test_case():
     module = single_module({
         'column':column,
         'table':table[0][0],
-        'function':{'count': [2], 'sum': [2, 3]},
+        'function':{'count':[1]},
         'where':[{
             'symbol':'=',
             'left':column[2],
