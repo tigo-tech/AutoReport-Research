@@ -7,14 +7,12 @@ class single_module:
     """
     modifiedby:彭于晏 2019/4/29
 
-    该module做单表查询,完成的工作
-    1.无聚合函数的普通列
-    2.包含一些聚合函数,比如count,avg,sum,abs关键字,普通列和聚合函数的混合
+    该module做单表和多表(非join嵌套)查询,完成的工作
+    1.无内置函数的普通列
+    2.包含一些内置函数,比如count,avg,sum,abs关键字,普通列和聚合函数的混合
     3.group by关键字
     4.where关键字
-
-    to do:1.聚合函数只是内置函数的一部分，内置函数的返回可能就不是一个结果
-          2.加上之前sql_format的东西,整合成single和mutiply
+    5.order by关键字
     """
 
     def __init__(self, dict):
